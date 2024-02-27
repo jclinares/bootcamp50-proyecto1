@@ -1,7 +1,0 @@
-spring:
-  r2dbc:
-    url: r2dbc:mongodb://jclinaresv:V2bZ3qO2WgsmX8rv@nttdatabootcamp50bankin.ntjt8or.mongodb.net/NttDataBootcamp50Banking
-  data:
-    mongodb:
-      uri: mongodb+srv://jclinaresv:V2bZ3qO2WgsmX8rv@nttdatabootcamp50bankin.ntjt8or.mongodb.net/?retryWrites=true&w=majority&appName=NttDataBootcamp50Banking
-      database: NttDataBootcamp50Banking
