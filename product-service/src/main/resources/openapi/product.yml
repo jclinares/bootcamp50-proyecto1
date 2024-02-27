@@ -1,0 +1,351 @@
+openapi: 3.0.3
+info:
+  title: nttdatabanking - product service
+  description: servicio de productos para negocio bancario
+  version: 1.0.0
+tags:
+  - name: account
+    description: account operations
+  - name: credit
+    description: credit operations
+paths:
+  /account:
+    post:
+      tags:
+        - account
+      summary: operation account create
+      operationId: accountcreate
+      requestBody:
+        description: create account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateDto'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailDto'
+        '400':
+          description: invalid input
+  /account/{customerid}:
+    get:
+      tags:
+        - account
+      summary: operation account get list
+      operationId: accountgetlist
+      parameters:
+        - name: customerid
+          in: path
+          description: customer id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDetailDto'
+        '400':
+          description: invalid input
+  /account/movement:
+    post:
+      tags:
+        - account
+      summary: operation account movement create
+      operationId: accountmovementcreate
+      requestBody:
+        description: create account movement
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountMovementCreateDto'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountMovementDetailDto'
+        '400':
+          description: invalid input
+  /account/movement/{accountid}:
+    get:
+      tags:
+        - account
+      summary: operation account movement get list
+      operationId: accountmovementgetlist
+      parameters:
+        - name: accountid
+          in: path
+          description: account id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountMovementDetailDto'
+        '400':
+          description: invalid input
+  /credit:
+    post:
+      tags:
+        - credit
+      summary: operation credit create
+      operationId: creditcreate
+      requestBody:
+        description: create credit
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCreateDto'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditDetailDto'
+        '400':
+          description: invalid input
+  /credit/{customerid}:
+    get:
+      tags:
+        - credit
+      summary: operation credit get list
+      operationId: creditgetlist
+      parameters:
+        - name: customerid
+          in: path
+          description: customer id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditDetailDto'
+        '400':
+          description: invalid input
+  /credit/movement:
+    post:
+      tags:
+        - credit
+      summary: operation credit movement create
+      operationId: creditmovementcreate
+      requestBody:
+        description: create credit movement
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditMovementCreateDto'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditMovementDetailDto'
+        '400':
+          description: invalid input
+  /credit/movement/{creditid}:
+    get:
+      tags:
+        - credit
+      summary: operation credit movement get list
+      operationId: creditmovementgetlist
+      parameters:
+        - name: creditid
+          in: path
+          description: credit id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditMovementDetailDto'
+        '400':
+          description: invalid input
+components:
+  schemas:
+    AccountDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        accountCustomerType:
+          type: string
+        accountNumber:
+          type: string
+        accountType:
+          type: string
+        availableAmount:
+          type: number
+          format: double
+        commission:
+          type: number
+          format: double
+        movementLimits:
+          type: integer
+          format: int32
+        dayMovement:
+          type: integer
+          format: int32
+    AccountCreateDto:
+      required:
+        - accountCustomerType
+        - accountCustomer
+        - accountNumber
+        - accountType
+        - availableAmount
+      type: object
+      properties:
+        accountCustomerType:
+          type: string
+        accountCustomer:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountCustomer'
+        accountNumber:
+          type: string
+        accountType:
+          type: string
+        availableAmount:
+          type: number
+          format: double
+        commission:
+          type: number
+          format: double
+        movementLimits:
+          type: integer
+          format: int32
+        dayMovement:
+          type: integer
+          format: int32
+    AccountCustomer:
+      required:
+        - customerId
+      properties:
+        customerId:
+          type: string
+        businessCustomerType:
+          type: string
+    AccountMovementDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        movementType:
+          type: string
+        amount:
+          type: number
+          format: double
+    AccountMovementCreateDto:
+      required:
+        - accountId
+        - description
+        - movementType
+        - amount
+      type: object
+      properties:
+        accountId:
+          type: string
+        description:
+          type: string
+        movementType:
+          type: string
+        amount:
+          type: number
+          format: double
+    CreditDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        creditNumber:
+          type: string
+        creditType:
+          type: string        
+        limitAmount:
+          type: number
+          format: double
+        availableAmount:
+          type: number
+          format: double
+    CreditCreateDto:
+      required:
+        - creditNumber
+        - creditType
+        - limitAmount
+        - availableAmount
+      properties:
+        customerId:
+          type: string
+        creditNumber:
+          type: string
+        creditType:
+          type: string        
+        limitAmount:
+          type: number
+          format: double
+        availableAmount:
+          type: number
+          format: double
+    CreditMovementDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        movementType:
+          type: string
+        amount:
+          type: number
+          format: double
+    CreditMovementCreateDto:
+      required:
+        - creditId
+        - description
+        - movementType
+        - amount
+      type: object
+      properties:
+        creditId:
+          type: string
+        description:
+          type: string
+        movementType:
+          type: string
+        amount:
+          type: number
+          format: double
