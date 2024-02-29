@@ -1,12 +1,14 @@
-package com.nttdatabanking.customerservice.domain.service;
+package com.nttdatabanking.customerservice.service;
 
-import com.nttdatabanking.customerservice.domain.dto.CustomerCreateDto;
-import com.nttdatabanking.customerservice.domain.dto.CustomerDetailDto;
-import com.nttdatabanking.customerservice.domain.dto.CustomerUpdateDto;
-
+import com.nttdatabanking.customerservice.model.CustomerCreateDto;
+import com.nttdatabanking.customerservice.model.CustomerDetailDto;
+import com.nttdatabanking.customerservice.model.CustomerUpdateDto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Interfaz servicio cliente.
+ */
 public interface CustomerService {
 
     Flux<CustomerDetailDto> getList();

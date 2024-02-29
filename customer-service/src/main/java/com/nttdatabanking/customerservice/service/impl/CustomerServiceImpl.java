@@ -1,20 +1,21 @@
-package com.nttdatabanking.customerservice.domain.service.impl;
+package com.nttdatabanking.customerservice.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.nttdatabanking.customerservice.domain.dto.CustomerCreateDto;
-import com.nttdatabanking.customerservice.domain.dto.CustomerDetailDto;
-import com.nttdatabanking.customerservice.domain.dto.CustomerUpdateDto;
-import com.nttdatabanking.customerservice.domain.service.CustomerService;
 import com.nttdatabanking.customerservice.infraestructure.repository.CustomerRepository;
+import com.nttdatabanking.customerservice.model.CustomerCreateDto;
+import com.nttdatabanking.customerservice.model.CustomerDetailDto;
+import com.nttdatabanking.customerservice.model.CustomerUpdateDto;
+import com.nttdatabanking.customerservice.service.CustomerService;
 import com.nttdatabanking.customerservice.util.Constants;
 import com.nttdatabanking.customerservice.util.Messages;
 import com.nttdatabanking.customerservice.util.mapper.CustomerMapper;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Clase implementacion servicio cliente.
+ */
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -65,20 +66,20 @@ public class CustomerServiceImpl implements CustomerService {
                         && dto.getDocumentNumber() != null
                         && dto.getEmail() != null
                         && dto.getCustomerType() != null
-                        && (dto.getCustomerType().equalsIgnoreCase(Constants.CUSTOMER_PERSONAL)
-                                || dto.getCustomerType().equalsIgnoreCase(Constants.CUSTOMER_BUSINESS)));
+                        && (dto.getCustomerType().equals(Constants.CUSTOMER_PERSONAL)
+                                || dto.getCustomerType().equals(Constants.CUSTOMER_BUSINESS)));
     }
 
-    private static Mono<CustomerUpdateDto> validate(CustomerUpdateDto CustomerUpdateDto) {
-        return Mono.just(CustomerUpdateDto)
+    private static Mono<CustomerUpdateDto> validate(CustomerUpdateDto customerUpdateDto) {
+        return Mono.just(customerUpdateDto)
                 .filter(dto -> dto.getId() != null
                         && dto.getName() != null
                         && dto.getLastname() != null
                         && dto.getDocumentNumber() != null
                         && dto.getEmail() != null
                         && dto.getCustomerType() != null
-                        && (dto.getCustomerType().equalsIgnoreCase(Constants.CUSTOMER_PERSONAL)
-                                || dto.getCustomerType().equalsIgnoreCase(Constants.CUSTOMER_BUSINESS)));
+                        && (dto.getCustomerType().equals(Constants.CUSTOMER_PERSONAL)
+                                || dto.getCustomerType().equals(Constants.CUSTOMER_BUSINESS)));
     }
 
 }

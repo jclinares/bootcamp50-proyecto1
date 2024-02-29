@@ -76,7 +76,23 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+        			<configLocation>google_checks.xml</configLocation>
+					<violationSeverity>warning</violationSeverity>
+    			</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
 				<version>6.6.0</version>
@@ -87,20 +103,20 @@
 						</goals>
 						<configuration>
 							<inputSpec>
-								${project.basedir}/src/main/resources/openapi/customer.yml
+								${project.basedir}/src/main/resources/api.yml
 							</inputSpec>
 							<generatorName>spring</generatorName>
 							<apiPackage>com.nttdatabanking.customerservice.api</apiPackage>
-							<modelPackage>com.nttdatabanking.customerservice.domain.dto</modelPackage>
+							<modelPackage>com.nttdatabanking.customerservice.model</modelPackage>
 							<configOptions>
 								<reactive>true</reactive>
-								<delegatePattern>false</delegatePattern>
+								<delegatePattern>true</delegatePattern>
 								<serializableModel>true</serializableModel>
 							</configOptions>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
 	</build>
 
