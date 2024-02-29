@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Clase entidad cliente.
@@ -17,8 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class CustomerEntity {
 
     @Id
-    @Field("_id")
-    private String id;
+    private String _id;
 
     private String name;
 

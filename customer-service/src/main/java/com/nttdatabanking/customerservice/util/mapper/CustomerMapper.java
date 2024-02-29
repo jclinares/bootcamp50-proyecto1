@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class CustomerMapper {
 
     private CustomerMapper() {
-        throw new IllegalStateException("Utility class");
     }
 
     /**
@@ -21,7 +20,7 @@ public class CustomerMapper {
      */
     public static CustomerDetailDto toDto(CustomerEntity customerEntity) {
         CustomerDetailDto customerDetailDto = new CustomerDetailDto();
-        customerDetailDto.setId(customerEntity.getId());
+        customerDetailDto.setId(customerEntity.get_id());
         customerDetailDto.setName(customerEntity.getName());
         customerDetailDto.setLastname(customerEntity.getLastname());
         customerDetailDto.setDocumentNumber(customerEntity.getDocumentNumber());
@@ -48,7 +47,7 @@ public class CustomerMapper {
      */
     public static CustomerEntity toEntity(CustomerUpdateDto customerDto) {
         CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setId(customerDto.getId());
+        customerEntity.set_id(customerDto.getId());
         customerEntity.setName(customerDto.getName());
         customerEntity.setLastname(customerDto.getLastname());
         customerEntity.setDocumentNumber(customerDto.getDocumentNumber());
