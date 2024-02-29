@@ -5,6 +5,10 @@ package com.nttdatabanking.customerservice.util;
  */
 public class Messages {
 
-    public static String ERROR_CUSTOMER_VALIDATION = "ERROR VALIDACION CLIENTE";
+    private Messages() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static final String ERRORCUSTOMERVALIDATION = "ERROR VALIDACION CLIENTE";
 
 }

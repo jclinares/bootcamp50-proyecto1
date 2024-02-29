@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Mono<CustomerDetailDto> create(Mono<CustomerCreateDto> customerCreateDto) {
         return customerCreateDto
                 .flatMap(CustomerServiceImpl::validate)
-                .switchIfEmpty(Mono.error(new Error(Messages.ERROR_CUSTOMER_VALIDATION)))
+                .switchIfEmpty(Mono.error(new Error(Messages.ERRORCUSTOMERVALIDATION)))
                 .map(CustomerMapper::toEntity)
                 .flatMap(customerRepository::insert)
                 .map(CustomerMapper::toDto);
@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Mono<CustomerDetailDto> update(Mono<CustomerUpdateDto> customerUpdateDto) {
         return customerUpdateDto
                 .flatMap(CustomerServiceImpl::validate)
-                .switchIfEmpty(Mono.error(new Error(Messages.ERROR_CUSTOMER_VALIDATION)))
+                .switchIfEmpty(Mono.error(new Error(Messages.ERRORCUSTOMERVALIDATION)))
                 .map(CustomerMapper::toEntity)
                 .flatMap(customerRepository::save)
                 .map(CustomerMapper::toDto);
@@ -66,8 +66,8 @@ public class CustomerServiceImpl implements CustomerService {
                         && dto.getDocumentNumber() != null
                         && dto.getEmail() != null
                         && dto.getCustomerType() != null
-                        && (dto.getCustomerType().equals(Constants.CUSTOMER_PERSONAL)
-                                || dto.getCustomerType().equals(Constants.CUSTOMER_BUSINESS)));
+                        && (dto.getCustomerType().equals(Constants.CUSTOMERPERSONAL)
+                                || dto.getCustomerType().equals(Constants.CUSTOMERBUSINESS)));
     }
 
     private static Mono<CustomerUpdateDto> validate(CustomerUpdateDto customerUpdateDto) {
@@ -78,8 +78,8 @@ public class CustomerServiceImpl implements CustomerService {
                         && dto.getDocumentNumber() != null
                         && dto.getEmail() != null
                         && dto.getCustomerType() != null
-                        && (dto.getCustomerType().equals(Constants.CUSTOMER_PERSONAL)
-                                || dto.getCustomerType().equals(Constants.CUSTOMER_BUSINESS)));
+                        && (dto.getCustomerType().equals(Constants.CUSTOMERPERSONAL)
+                                || dto.getCustomerType().equals(Constants.CUSTOMERBUSINESS)));
     }
 
 }

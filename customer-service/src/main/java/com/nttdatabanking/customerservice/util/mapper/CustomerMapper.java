@@ -1,6 +1,5 @@
 package com.nttdatabanking.customerservice.util.mapper;
 
-import com.nttdatabanking.customerservice.api.CustomerApi;
 import com.nttdatabanking.customerservice.infraestructure.entity.CustomerEntity;
 import com.nttdatabanking.customerservice.model.CustomerCreateDto;
 import com.nttdatabanking.customerservice.model.CustomerDetailDto;
@@ -12,6 +11,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CustomerMapper {
+
+    private CustomerMapper() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Metodo map CustomerEntity a CustomerDetailDto.

@@ -32,7 +32,7 @@ public class CustomerApiDelegateImpl implements CustomerApiDelegate {
         public Mono<ResponseEntity<CustomerDetailDto>> customergetbyid(
                         String id, ServerWebExchange exchange) {
                 return customerService.getById(id)
-                                .map(result -> ResponseEntity.ok(result));
+                                .map(ResponseEntity::ok);
         }
 
         @Override
@@ -40,7 +40,7 @@ public class CustomerApiDelegateImpl implements CustomerApiDelegate {
                         Mono<CustomerCreateDto> customerCreateDto,
                         ServerWebExchange exchange) {
                 return customerService.create(customerCreateDto)
-                                .map(result -> ResponseEntity.ok(result));
+                                .map(ResponseEntity::ok);
         }
 
         @Override
@@ -48,14 +48,14 @@ public class CustomerApiDelegateImpl implements CustomerApiDelegate {
                         Mono<CustomerUpdateDto> customerUpdateDto,
                         ServerWebExchange exchange) {
                 return customerService.update(customerUpdateDto)
-                                .map(result -> ResponseEntity.ok(result));
+                                .map(ResponseEntity::ok);
         }
 
         @Override
         public Mono<ResponseEntity<Void>> customerdelete(
                         String id, ServerWebExchange exchange) {
                 return customerService.delete(id)
-                                .map(result -> ResponseEntity.ok(result));
+                                .map(ResponseEntity::ok);
         }
 
 }

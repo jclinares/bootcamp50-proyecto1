@@ -5,9 +5,13 @@ package com.nttdatabanking.customerservice.util;
  */
 public class Constants {
 
-    public static String CUSTOMER_PERSONAL = "PERSONAL";
-    public static String CUSTOMER_PERSONALVIP = "PERSONAL_VIP";
-    public static String CUSTOMER_BUSINESS = "EMPRESARIAL";
-    public static String CUSTOMER_BUSINESS_MYPE = "EMPRESARIAL_MYPE";
+    private Constants() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static final String CUSTOMERPERSONAL = "PERSONAL";
+    public static final String CUSTOMERPERSONALVIP = "PERSONAL_VIP";
+    public static final String CUSTOMERBUSINESS = "EMPRESARIAL";
+    public static final String CUSTOMERBUSINESSMYPE = "EMPRESARIAL_MYPE";
 
 }
