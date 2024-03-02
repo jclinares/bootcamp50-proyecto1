@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Mono<CustomerDetailDto> create(Mono<CustomerCreateDto> customerCreateDto) {
         return customerCreateDto
-                .flatMap(CustomerServiceImpl::validate)
+                .filter(this::validate)
                 .switchIfEmpty(Mono.error(new Error(Messages.ERRORCUSTOMERVALIDATION)))
                 .map(CustomerMapper::toEntity)
                 .flatMap(customerRepository::insert)
@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Mono<CustomerDetailDto> update(Mono<CustomerUpdateDto> customerUpdateDto) {
         return customerUpdateDto
-                .flatMap(CustomerServiceImpl::validate)
+                .filter(this::validate)
                 .switchIfEmpty(Mono.error(new Error(Messages.ERRORCUSTOMERVALIDATION)))
                 .map(CustomerMapper::toEntity)
                 .flatMap(customerRepository::save)
@@ -59,27 +59,25 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.deleteById(id);
     }
 
-    private static Mono<CustomerCreateDto> validate(CustomerCreateDto customerCreateDto) {
-        return Mono.just(customerCreateDto)
-                .filter(dto -> dto.getName() != null
-                        && dto.getLastname() != null
-                        && dto.getDocumentNumber() != null
-                        && dto.getEmail() != null
-                        && dto.getCustomerType() != null
-                        && (dto.getCustomerType().equals(Constants.CUSTOMERPERSONAL)
-                                || dto.getCustomerType().equals(Constants.CUSTOMERBUSINESS)));
+    private Boolean validate(CustomerCreateDto customerCreateDto) {
+        return customerCreateDto.getName() != null
+                && customerCreateDto.getLastname() != null
+                && customerCreateDto.getDocumentNumber() != null
+                && customerCreateDto.getEmail() != null
+                && customerCreateDto.getCustomerType() != null
+                && Constants.CostumerType.valueOf(
+                        customerCreateDto.getCustomerType().toUpperCase()) != null;
     }
 
-    private static Mono<CustomerUpdateDto> validate(CustomerUpdateDto customerUpdateDto) {
-        return Mono.just(customerUpdateDto)
-                .filter(dto -> dto.getId() != null
-                        && dto.getName() != null
-                        && dto.getLastname() != null
-                        && dto.getDocumentNumber() != null
-                        && dto.getEmail() != null
-                        && dto.getCustomerType() != null
-                        && (dto.getCustomerType().equals(Constants.CUSTOMERPERSONAL)
-                                || dto.getCustomerType().equals(Constants.CUSTOMERBUSINESS)));
+    private Boolean validate(CustomerUpdateDto customerUpdateDto) {
+        return customerUpdateDto.getId() != null
+                && customerUpdateDto.getName() != null
+                && customerUpdateDto.getLastname() != null
+                && customerUpdateDto.getDocumentNumber() != null
+                && customerUpdateDto.getEmail() != null
+                && customerUpdateDto.getCustomerType() != null
+                && Constants.CostumerType.valueOf(
+                    customerUpdateDto.getCustomerType().toUpperCase()) != null;
     }
 
 }

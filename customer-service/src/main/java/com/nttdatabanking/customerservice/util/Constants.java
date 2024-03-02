@@ -8,9 +8,14 @@ public class Constants {
     private Constants() {
     }
 
-    public static final String CUSTOMERPERSONAL = "PERSONAL";
-    public static final String CUSTOMERPERSONALVIP = "PERSONAL_VIP";
-    public static final String CUSTOMERBUSINESS = "EMPRESARIAL";
-    public static final String CUSTOMERBUSINESSMYPE = "EMPRESARIAL_MYPE";
+    /**
+     * Enum tipo cliente.
+     */
+    public enum CostumerType {
+        PERSONAL,
+        PERSONALVIP,
+        BUSINESS,
+        BUSINESSMYPE,
+    }
 
 }

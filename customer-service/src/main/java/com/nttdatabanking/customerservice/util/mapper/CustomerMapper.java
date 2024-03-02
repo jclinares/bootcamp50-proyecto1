@@ -38,7 +38,7 @@ public class CustomerMapper {
         customerEntity.setLastname(customerDto.getLastname());
         customerEntity.setDocumentNumber(customerDto.getDocumentNumber());
         customerEntity.setEmail(customerDto.getEmail());
-        customerEntity.setCustomerType(customerDto.getCustomerType());
+        customerEntity.setCustomerType(customerDto.getCustomerType().toUpperCase());
         return customerEntity;
     }
 
@@ -52,7 +52,7 @@ public class CustomerMapper {
         customerEntity.setLastname(customerDto.getLastname());
         customerEntity.setDocumentNumber(customerDto.getDocumentNumber());
         customerEntity.setEmail(customerDto.getEmail());
-        customerEntity.setCustomerType(customerDto.getCustomerType());
+        customerEntity.setCustomerType(customerDto.getCustomerType().toUpperCase());
         return customerEntity;
     }
 
