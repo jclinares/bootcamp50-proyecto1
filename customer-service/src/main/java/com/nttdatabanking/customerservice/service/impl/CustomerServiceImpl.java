@@ -65,8 +65,8 @@ public class CustomerServiceImpl implements CustomerService {
                 && customerCreateDto.getDocumentNumber() != null
                 && customerCreateDto.getEmail() != null
                 && customerCreateDto.getCustomerType() != null
-                && Constants.CostumerType.valueOf(
-                        customerCreateDto.getCustomerType().toUpperCase()) != null;
+                && Constants.CostumerType.getByDescription(
+                        customerCreateDto.getCustomerType()) != null;
     }
 
     private Boolean validate(CustomerUpdateDto customerUpdateDto) {
@@ -76,8 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
                 && customerUpdateDto.getDocumentNumber() != null
                 && customerUpdateDto.getEmail() != null
                 && customerUpdateDto.getCustomerType() != null
-                && Constants.CostumerType.valueOf(
-                    customerUpdateDto.getCustomerType().toUpperCase()) != null;
+                && Constants.CostumerType.getByDescription(
+                        customerUpdateDto.getCustomerType()) != null;
     }
 
 }
