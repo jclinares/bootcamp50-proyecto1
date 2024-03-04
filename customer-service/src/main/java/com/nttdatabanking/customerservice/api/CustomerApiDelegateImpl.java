@@ -44,8 +44,7 @@ public class CustomerApiDelegateImpl implements CustomerApiDelegate {
 
         @Override
         public Mono<ResponseEntity<CustomerDetailDto>> customercreate(
-                        Mono<CustomerCreateDto> customerCreateDto,
-                        ServerWebExchange exchange) {
+                        Mono<CustomerCreateDto> customerCreateDto, ServerWebExchange exchange) {
                 log.info("customercreate start");
                 log.info("customerCreateDto: {}", customerCreateDto);
                 return customerService.create(customerCreateDto)
@@ -55,8 +54,7 @@ public class CustomerApiDelegateImpl implements CustomerApiDelegate {
 
         @Override
         public Mono<ResponseEntity<CustomerDetailDto>> customerupdate(
-                        Mono<CustomerUpdateDto> customerUpdateDto,
-                        ServerWebExchange exchange) {
+                        Mono<CustomerUpdateDto> customerUpdateDto, ServerWebExchange exchange) {
                 log.info("customerUpdateDto start");
                 log.info("customerUpdateDto: {}", customerUpdateDto);
                 return customerService.update(customerUpdateDto)
