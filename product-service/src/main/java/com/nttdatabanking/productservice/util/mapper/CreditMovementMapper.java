@@ -1,11 +1,17 @@
 package com.nttdatabanking.productservice.util.mapper;
 
-import com.nttdatabanking.productservice.domain.dto.CreditMovementCreateDto;
-import com.nttdatabanking.productservice.domain.dto.CreditMovementDetailDto;
 import com.nttdatabanking.productservice.infraestructure.entity.CreditMovementEntity;
+import com.nttdatabanking.productservice.model.CreditMovementCreateDto;
+import com.nttdatabanking.productservice.model.CreditMovementDetailDto;
 
+/**
+ * Clase mapper movimiento credito.
+ */
 public class CreditMovementMapper {
 
+    /**
+     * Metodo map CreditMovementEntity a CreditMovementDetailDto.
+     */
     public static CreditMovementDetailDto toDto(CreditMovementEntity creditMovementEntity) {
         CreditMovementDetailDto creditMovementDetailDto = new CreditMovementDetailDto();
         creditMovementDetailDto.setId(creditMovementEntity.get_id());
@@ -15,6 +21,9 @@ public class CreditMovementMapper {
         return creditMovementDetailDto;
     }
 
+    /**
+     * Metodo map CreditMovementCreateDto a CreditMovementEntity.
+     */
     public static CreditMovementEntity toEntity(CreditMovementCreateDto creditMovementCreateDto) {
         CreditMovementEntity creditMovementEntity = new CreditMovementEntity();
         creditMovementEntity.setCreditId(creditMovementCreateDto.getCreditId());

@@ -200,7 +200,7 @@ components:
       properties:
         id:
           type: string
-        accountCustomerType:
+        customerType:
           type: string
         accountNumber:
           type: string
@@ -209,30 +209,21 @@ components:
         availableAmount:
           type: number
           format: double
-        commission:
-          type: number
-          format: double
-        movementLimits:
-          type: integer
-          format: int32
-        dayMovement:
-          type: integer
-          format: int32
     AccountCreateDto:
       required:
-        - accountCustomerType
-        - accountCustomer
+        - customerType
+        - customerList
         - accountNumber
         - accountType
         - availableAmount
       type: object
       properties:
-        accountCustomerType:
+        customerType:
           type: string
-        accountCustomer:
+        customerList:
           type: array
           items:
-            $ref: '#/components/schemas/AccountCustomer'
+            $ref: '#/components/schemas/CustomerDto'
         accountNumber:
           type: string
         accountType:
@@ -240,16 +231,7 @@ components:
         availableAmount:
           type: number
           format: double
-        commission:
-          type: number
-          format: double
-        movementLimits:
-          type: integer
-          format: int32
-        dayMovement:
-          type: integer
-          format: int32
-    AccountCustomer:
+    CustomerDto:
       required:
         - customerId
       properties:
@@ -291,11 +273,15 @@ components:
       properties:
         id:
           type: string
+        customerId:
+          type: string
+        customerType:
+          type: string
         creditNumber:
           type: string
         creditType:
           type: string        
-        limitAmount:
+        amount:
           type: number
           format: double
         availableAmount:
@@ -303,21 +289,21 @@ components:
           format: double
     CreditCreateDto:
       required:
+        - customerId
+        - customerType
         - creditNumber
         - creditType
-        - limitAmount
-        - availableAmount
+        - amount
       properties:
         customerId:
+          type: string
+        customerType:
           type: string
         creditNumber:
           type: string
         creditType:
           type: string        
-        limitAmount:
-          type: number
-          format: double
-        availableAmount:
+        amount:
           type: number
           format: double
     CreditMovementDetailDto:

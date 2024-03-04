@@ -1,61 +1,66 @@
 package com.nttdatabanking.productservice.util.mapper;
 
+import com.nttdatabanking.productservice.infraestructure.entity.AccountEntity;
+import com.nttdatabanking.productservice.infraestructure.entity.CustomerEntity;
+import com.nttdatabanking.productservice.model.AccountCreateDto;
+import com.nttdatabanking.productservice.model.AccountDetailDto;
+import com.nttdatabanking.productservice.model.CustomerDto;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Component;
 
-import com.nttdatabanking.productservice.domain.dto.AccountCreateDto;
-import com.nttdatabanking.productservice.domain.dto.AccountDetailDto;
-import com.nttdatabanking.productservice.infraestructure.entity.AccountCustomer;
-import com.nttdatabanking.productservice.infraestructure.entity.AccountEntity;
-
+/**
+ * Clase mapper cuenta.
+ */
 @Component
 public class AccountMapper {
 
-    public static AccountDetailDto toDto(AccountEntity accountEntity) {
+    /**
+     * Metodo map AccountEntity a AccountDetailDto.
+     */
+    public static AccountDetailDto toDto(
+            AccountEntity accountEntity) {
         AccountDetailDto accountDetailDto = new AccountDetailDto();
         accountDetailDto.setId(accountEntity.get_id());
-        accountDetailDto.setAccountCustomerType(accountEntity.getAccountCustomerType());
+        accountDetailDto.setCustomerType(accountEntity.getCustomerType());
         accountDetailDto.setAccountNumber(accountEntity.getAccountNumber());
         accountDetailDto.setAccountType(accountEntity.getAccountType());
         accountDetailDto.setAvailableAmount(accountEntity.getAvailableAmount());
-        accountDetailDto.setCommission(accountEntity.getCommission());
-        accountDetailDto.setMovementLimits(accountEntity.getMovementLimits());
-        accountDetailDto.setDayMovement(accountEntity.getDayMovement());
         return accountDetailDto;
     }
 
+    /**
+     * Metodo map AccountCreateDto a AccountEntity.
+     */
     public static AccountEntity toEntity(AccountCreateDto accountCreateDto) {
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountCustomerType(accountCreateDto.getAccountCustomerType());
-        accountEntity.setAccountCustomer(toEntity(accountCreateDto.getAccountCustomer()));
+        accountEntity.setCustomerType(accountCreateDto.getCustomerType());
+        accountEntity.setCustomerList(toEntity(accountCreateDto.getCustomerList()));
         accountEntity.setAccountNumber(accountCreateDto.getAccountNumber());
         accountEntity.setAccountType(accountCreateDto.getAccountType());
         accountEntity.setAvailableAmount(accountCreateDto.getAvailableAmount());
-        accountEntity.setCommission(accountCreateDto.getCommission());
-        accountEntity.setMovementLimits(accountCreateDto.getMovementLimits());
-        accountEntity.setDayMovement(accountCreateDto.getDayMovement());
         return accountEntity;
     }
 
-    private static List<AccountCustomer> toEntity(
-            List<com.nttdatabanking.productservice.domain.dto.@Valid AccountCustomer> accountCustomerDto) {
-        List<AccountCustomer> accountCustomerList = new ArrayList<>();
-        for (com.nttdatabanking.productservice.domain.dto.@Valid AccountCustomer accountCustomer : accountCustomerDto) {
-            accountCustomerList.add(toEntity(accountCustomer));
+    /**
+     * Metodo map ListAccountCustomerDto a ListAccountCustomerEntity.
+     */
+    private static List<CustomerEntity> toEntity(List<CustomerDto> customerDtoList) {
+        List<CustomerEntity> accountCustomerList = new ArrayList<>();
+        for (CustomerDto customer : customerDtoList) {
+            accountCustomerList.add(toEntity(customer));
         }
         return accountCustomerList;
     }
 
-    private static AccountCustomer toEntity(
-            com.nttdatabanking.productservice.domain.dto.@Valid AccountCustomer accountCustomerDto) {
-        AccountCustomer accountCustomer = new AccountCustomer();
-        accountCustomer.setCustomerId(accountCustomerDto.getCustomerId());
-        accountCustomer.setBusinessCustomerType(accountCustomerDto.getBusinessCustomerType());
-        return accountCustomer;
+    /**
+     * Metodo map AccountCustomerDto a AccountCustomerEntity.
+     */
+    private static CustomerEntity toEntity(CustomerDto customerDto) {
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setCustomerId(customerDto.getCustomerId());
+        customerEntity.setBusinessCustomerType(customerDto.getBusinessCustomerType());
+        return customerEntity;
     }
 
 }

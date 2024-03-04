@@ -4,6 +4,7 @@ import com.nttdatabanking.customerservice.model.CustomerCreateDto;
 import com.nttdatabanking.customerservice.model.CustomerUpdateDto;
 import com.nttdatabanking.customerservice.util.enumeration.CostumerTypeEnum;
 import com.nttdatabanking.customerservice.util.enumeration.UtilEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,11 +17,11 @@ public class CustomerValidation {
      * Metodo validacion creacion cliente.
      */
     public static Boolean validateCustomer(CustomerCreateDto customerCreateDto) {
-        return customerCreateDto.getName() != null
-                && customerCreateDto.getLastname() != null
-                && customerCreateDto.getDocumentNumber() != null
-                && customerCreateDto.getEmail() != null
-                && customerCreateDto.getCustomerType() != null
+        return StringUtils.isNotBlank(customerCreateDto.getName())
+                && StringUtils.isNotBlank(customerCreateDto.getLastname())
+                && StringUtils.isNotBlank(customerCreateDto.getDocumentNumber())
+                && StringUtils.isNotBlank(customerCreateDto.getEmail())
+                && StringUtils.isNotBlank(customerCreateDto.getCustomerType())
                 && UtilEnum.getByDescription(CostumerTypeEnum.class,
                         customerCreateDto.getCustomerType()) != null;
     }
@@ -29,12 +30,12 @@ public class CustomerValidation {
      * Metodo validacion actualizacion cliente.
      */
     public static Boolean validateCustomer(CustomerUpdateDto customerUpdateDto) {
-        return customerUpdateDto.getId() != null
-                && customerUpdateDto.getName() != null
-                && customerUpdateDto.getLastname() != null
-                && customerUpdateDto.getDocumentNumber() != null
-                && customerUpdateDto.getEmail() != null
-                && customerUpdateDto.getCustomerType() != null
+        return StringUtils.isNotBlank(customerUpdateDto.getId())
+                && StringUtils.isNotBlank(customerUpdateDto.getName())
+                && StringUtils.isNotBlank(customerUpdateDto.getLastname())
+                && StringUtils.isNotBlank(customerUpdateDto.getDocumentNumber())
+                && StringUtils.isNotBlank(customerUpdateDto.getEmail())
+                && StringUtils.isNotBlank(customerUpdateDto.getCustomerType())
                 && UtilEnum.getByDescription(CostumerTypeEnum.class,
                         customerUpdateDto.getCustomerType()) != null;
     }

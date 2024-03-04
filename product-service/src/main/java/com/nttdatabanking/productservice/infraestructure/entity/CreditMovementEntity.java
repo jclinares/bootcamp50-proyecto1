@@ -1,12 +1,14 @@
 package com.nttdatabanking.productservice.infraestructure.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Clase entidad credito movimiento.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

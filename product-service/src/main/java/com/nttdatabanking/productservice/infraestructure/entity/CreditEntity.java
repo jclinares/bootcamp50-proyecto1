@@ -1,12 +1,14 @@
 package com.nttdatabanking.productservice.infraestructure.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Clase entidad credito.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +20,13 @@ public class CreditEntity {
 
     private String customerId;
 
+    private String customerType;
+
     private String creditNumber;
 
     private String creditType;
 
-    private Double limitAmount;
+    private Double amount;
 
     private Double availableAmount;
 

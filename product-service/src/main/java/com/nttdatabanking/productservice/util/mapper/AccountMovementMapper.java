@@ -1,12 +1,19 @@
 package com.nttdatabanking.productservice.util.mapper;
 
-import com.nttdatabanking.productservice.domain.dto.AccountMovementCreateDto;
-import com.nttdatabanking.productservice.domain.dto.AccountMovementDetailDto;
 import com.nttdatabanking.productservice.infraestructure.entity.AccountMovementEntity;
+import com.nttdatabanking.productservice.model.AccountMovementCreateDto;
+import com.nttdatabanking.productservice.model.AccountMovementDetailDto;
 
+/**
+ * Clase mapper movimiento cuenta.
+ */
 public class AccountMovementMapper {
 
-    public static AccountMovementDetailDto toDto(AccountMovementEntity accountMovementEntity) {
+    /**
+     * Metodo map AccountMovementEntity a AccountMovementDetailDto.
+     */
+    public static AccountMovementDetailDto toDto(
+            AccountMovementEntity accountMovementEntity) {
         AccountMovementDetailDto accountMovementDetailDto = new AccountMovementDetailDto();
         accountMovementDetailDto.setId(accountMovementEntity.get_id());
         accountMovementDetailDto.setDescription(accountMovementEntity.getDescription());
@@ -15,7 +22,11 @@ public class AccountMovementMapper {
         return accountMovementDetailDto;
     }
 
-    public static AccountMovementEntity toEntity(AccountMovementCreateDto accountMovementCreateDto) {
+    /**
+     * Metodo map AccountMovementCreateDto a AccountMovementEntity.
+     */
+    public static AccountMovementEntity toEntity(
+            AccountMovementCreateDto accountMovementCreateDto) {
         AccountMovementEntity accountMovementEntity = new AccountMovementEntity();
         accountMovementEntity.setAccountId(accountMovementCreateDto.getAccountId());
         accountMovementEntity.setDescription(accountMovementCreateDto.getDescription());
