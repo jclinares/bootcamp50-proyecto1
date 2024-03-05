@@ -3,9 +3,7 @@ package com.nttdatabanking.productservice.util.validation;
 import com.nttdatabanking.productservice.infraestructure.repository.AccountRepository;
 import com.nttdatabanking.productservice.infraestructure.repository.CreditRepository;
 import com.nttdatabanking.productservice.model.AccountCreateDto;
-import com.nttdatabanking.productservice.model.AccountMovementCreateDto;
 import com.nttdatabanking.productservice.model.CustomerDto;
-import com.nttdatabanking.productservice.util.enumeration.AccountMovementTypeEnum;
 import com.nttdatabanking.productservice.util.enumeration.AccountTypeEnum;
 import com.nttdatabanking.productservice.util.enumeration.BusinessCostumerTypeEnum;
 import com.nttdatabanking.productservice.util.enumeration.CostumerTypeEnum;
@@ -17,10 +15,10 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 /**
- * Clase validacion cuenta.
+ * Clase validador cuenta.
  */
 @Service
-public class AccountValidation {
+public class AccountValidator {
 
         @Autowired
         private AccountRepository accountRepository;
@@ -29,7 +27,7 @@ public class AccountValidation {
         private CreditRepository creditRepository;
 
         /**
-         * Metodo validacion cuenta.
+         * Metodo validador cuenta.
          */
         public Boolean validateAccount(AccountCreateDto dto) {
                 return validateGeneralAccount(dto)
@@ -40,7 +38,7 @@ public class AccountValidation {
         }
 
         /**
-         * Metodo validacion db cuenta.
+         * Metodo validador db cuenta.
          */
         public Mono<AccountCreateDto> validateDbAccount(AccountCreateDto dto) {
                 String customerType = dto.getCustomerType().toUpperCase();
@@ -112,13 +110,6 @@ public class AccountValidation {
                 return Mono.empty();
         }
 
-        /**
-         * Metodo validacion movimiento cuenta.
-         */
-        public Boolean validateAccountMovement(AccountMovementCreateDto dto) {
-                return UtilEnum.getByDescription(AccountMovementTypeEnum.class, dto.getMovementType()) != null;
-        }
-
         private Boolean validateGeneralAccount(AccountCreateDto dto) {
                 return StringUtils.isNotBlank(dto.getCustomerType())
                                 && UtilEnum.getByDescription(CostumerTypeEnum.class, dto.getCustomerType()) != null
@@ -134,13 +125,13 @@ public class AccountValidation {
         private Boolean validatePersonalAccount(AccountCreateDto dto) {
                 return !dto.getCustomerType().equalsIgnoreCase(CostumerTypeEnum.PERSONAL.getDescription())
                                 || (dto.getCustomerList().size() == 1 && dto.getCustomerList().stream()
-                                                .allMatch(AccountValidation::validatePersonalCustomer));
+                                                .allMatch(this::validatePersonalCustomer));
         }
 
         private Boolean validatePersonalVipAccount(AccountCreateDto dto) {
                 return !dto.getCustomerType().equalsIgnoreCase(CostumerTypeEnum.PERSONALVIP.getDescription())
                                 || (dto.getCustomerList().size() == 1 && dto.getCustomerList().stream()
-                                                .allMatch(AccountValidation::validatePersonalCustomer)
+                                                .allMatch(this::validatePersonalCustomer)
                                                 && dto.getAccountType().equalsIgnoreCase(
                                                                 AccountTypeEnum.SAVINGS.getDescription()));
         }
@@ -149,7 +140,7 @@ public class AccountValidation {
                 return !dto.getCustomerType().equalsIgnoreCase(CostumerTypeEnum.BUSINESS.getDescription())
                                 || (dto.getCustomerList().size() >= 1
                                                 && dto.getCustomerList().stream()
-                                                                .allMatch(AccountValidation::validateBusinessCustomer)
+                                                                .allMatch(this::validateBusinessCustomer)
                                                 && dto.getAccountType().equalsIgnoreCase(
                                                                 AccountTypeEnum.CURRENT.getDescription()));
         }
@@ -158,16 +149,16 @@ public class AccountValidation {
                 return !dto.getCustomerType().equalsIgnoreCase(CostumerTypeEnum.BUSINESSMYPE.getDescription())
                                 || (dto.getCustomerList().size() >= 1
                                                 && dto.getCustomerList().stream()
-                                                                .allMatch(AccountValidation::validateBusinessCustomer)
+                                                                .allMatch(this::validateBusinessCustomer)
                                                 && dto.getAccountType().equalsIgnoreCase(
                                                                 AccountTypeEnum.CURRENT.getDescription()));
         }
 
-        private static Boolean validatePersonalCustomer(CustomerDto dto) {
+        private Boolean validatePersonalCustomer(CustomerDto dto) {
                 return StringUtils.isNotBlank(dto.getCustomerId());
         }
 
-        private static Boolean validateBusinessCustomer(CustomerDto dto) {
+        private Boolean validateBusinessCustomer(CustomerDto dto) {
                 return StringUtils.isNotBlank(dto.getCustomerId())
                                 && UtilEnum.getByDescription(BusinessCostumerTypeEnum.class,
                                                 dto.getBusinessCustomerType()) != null;

@@ -19,9 +19,13 @@ public class AccountMovementEntity {
 
     private String accountId;
 
+    private String accountType;
+
     private String description;
 
     private String movementType;
 
     private Double amount;
+
+    private String movementDate;
 }

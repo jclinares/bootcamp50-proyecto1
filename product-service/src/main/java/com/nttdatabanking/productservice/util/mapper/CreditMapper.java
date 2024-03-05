@@ -6,13 +6,13 @@ import com.nttdatabanking.productservice.model.CreditDetailDto;
 import org.springframework.stereotype.Component;
 
 /**
- * Clase mapper credito.
+ * Clase mapeador credito.
  */
 @Component
 public class CreditMapper {
 
     /**
-     * Metodo map CreditEntity a CreditDetailDto.
+     * Metodo mapeador CreditEntity a CreditDetailDto.
      */
     public static CreditDetailDto toDto(CreditEntity creditEntity) {
         CreditDetailDto creditDetailDto = new CreditDetailDto();
@@ -27,14 +27,14 @@ public class CreditMapper {
     }
 
     /**
-     * Metodo map CreditCreateDto a CreditEntity.
+     * Metodo mapeador CreditCreateDto a CreditEntity.
      */
     public static CreditEntity toEntity(CreditCreateDto creditCreateDto) {
         CreditEntity creditEntity = new CreditEntity();
         creditEntity.setCustomerId(creditCreateDto.getCustomerId());
-        creditEntity.setCustomerType(creditCreateDto.getCustomerType());
+        creditEntity.setCustomerType(creditCreateDto.getCustomerType().toUpperCase());
         creditEntity.setCreditNumber(creditCreateDto.getCreditNumber());
-        creditEntity.setCreditType(creditCreateDto.getCreditType());
+        creditEntity.setCreditType(creditCreateDto.getCreditType().toUpperCase());
         creditEntity.setAmount(creditCreateDto.getAmount());
         creditEntity.setAvailableAmount(creditCreateDto.getAmount());
         return creditEntity;

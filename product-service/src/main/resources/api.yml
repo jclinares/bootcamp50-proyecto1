@@ -244,6 +244,10 @@ components:
       properties:
         id:
           type: string
+        accountId:
+          type: string
+        accountType:
+          type: string
         description:
           type: string
         movementType:
@@ -251,16 +255,23 @@ components:
         amount:
           type: number
           format: double
+        movementDate:
+          type: string
+          format: date-time
     AccountMovementCreateDto:
       required:
         - accountId
+        - accountType
         - description
         - movementType
         - amount
+        - movementDate
       type: object
       properties:
         accountId:
           type: string
+        accountType:
+          type: string
         description:
           type: string
         movementType:
@@ -268,6 +279,9 @@ components:
         amount:
           type: number
           format: double
+        movementDate:
+          type: string
+          format: date-time
     CreditDetailDto:
       type: object
       properties:

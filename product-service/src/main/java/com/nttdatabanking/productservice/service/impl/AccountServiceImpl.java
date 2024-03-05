@@ -1,6 +1,5 @@
 package com.nttdatabanking.productservice.service.impl;
 
-import com.nttdatabanking.productservice.infraestructure.entity.AccountMovementEntity;
 import com.nttdatabanking.productservice.infraestructure.repository.AccountMovementRepository;
 import com.nttdatabanking.productservice.infraestructure.repository.AccountRepository;
 import com.nttdatabanking.productservice.model.AccountCreateDto;
@@ -12,7 +11,8 @@ import com.nttdatabanking.productservice.util.Messages;
 import com.nttdatabanking.productservice.util.enumeration.AccountMovementTypeEnum;
 import com.nttdatabanking.productservice.util.mapper.AccountMapper;
 import com.nttdatabanking.productservice.util.mapper.AccountMovementMapper;
-import com.nttdatabanking.productservice.util.validation.AccountValidation;
+import com.nttdatabanking.productservice.util.validation.AccountMovementValidator;
+import com.nttdatabanking.productservice.util.validation.AccountValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -25,7 +25,10 @@ import reactor.core.publisher.Mono;
 public class AccountServiceImpl implements AccountService {
 
         @Autowired
-        private AccountValidation accountValidation;
+        private AccountValidator accountValidator;
+
+        @Autowired
+        private AccountMovementValidator accountMovementValidator;
 
         @Autowired
         private AccountRepository accountRepository;
@@ -45,9 +48,9 @@ public class AccountServiceImpl implements AccountService {
         public Mono<AccountDetailDto> create(
                         Mono<AccountCreateDto> accountCreateDto) {
                 return accountCreateDto
-                                .filter(dto -> accountValidation.validateAccount(dto))
+                                .filter(dto -> accountValidator.validateAccount(dto))
                                 .switchIfEmpty(Mono.error(new Error(Messages.ACCOUNTVALIDATIONERROR)))
-                                .flatMap(dto -> accountValidation.validateDbAccount(dto))
+                                .flatMap(dto -> accountValidator.validateDbAccount(dto))
                                 .switchIfEmpty(Mono.error(new Error(Messages.ACCOUNTDBVALIDATIONERROR)))
                                 .map(AccountMapper::toEntity)
                                 .flatMap(accountRepository::insert)
@@ -66,28 +69,26 @@ public class AccountServiceImpl implements AccountService {
         public Mono<AccountMovementDetailDto> createMovement(
                         Mono<AccountMovementCreateDto> accountMovementCreateDto) {
                 return accountMovementCreateDto
-                                .filter(dto -> accountValidation.validateAccountMovement(dto))
-                                .switchIfEmpty(Mono.error(new Error(Messages.ERRORACCOUNTMOVEMENTVALIDATION)))
+                                .filter(dto -> accountMovementValidator.validateAccountMovement(dto))
+                                .switchIfEmpty(Mono.error(new Error(Messages.ACCOUNTMOVEMENTVALIDATIONERROR)))
+                                .flatMap(dto -> accountMovementValidator.validateDbAccountMovement(dto))
+                                .switchIfEmpty(Mono.error(new Error(Messages.ACCOUNTMOVEMENTDBVALIDATIONERROR)))
                                 .map(AccountMovementMapper::toEntity)
                                 .flatMap(accountMovementRepository::insert)
-                                .flatMap(e -> updateAccount(e))
-                                .map(AccountMovementMapper::toDto);
-        }
-
-        private Mono<AccountMovementEntity> updateAccount(
-                        AccountMovementEntity accountMovementEntity) {
-                return accountRepository
-                                .findById(accountMovementEntity.getAccountId())
-                                .flatMap(accountEntity -> {
-                                        accountEntity.setAvailableAmount(accountEntity.getAvailableAmount()
-                                                        + accountMovementEntity.getAmount() * (accountMovementEntity
-                                                                        .getMovementType().equalsIgnoreCase(
-                                                                                        AccountMovementTypeEnum.DEPOSIT
-                                                                                                        .getDescription())
-                                                                                                                        ? 1
-                                                                                                                        : -1));
-                                        return accountRepository.save(accountEntity).thenReturn(accountMovementEntity);
-                                });
+                                .flatMap(accountMovementEntity -> accountRepository
+                                                .findById(accountMovementEntity.getAccountId())
+                                                .flatMap(accountEntity -> {
+                                                        Double accountAmount = accountEntity.getAvailableAmount();
+                                                        Double movementAmount = accountMovementEntity.getAmount();
+                                                        Double movementSign = accountMovementEntity.getMovementType()
+                                                                        .equals(AccountMovementTypeEnum.DEPOSIT
+                                                                                        .getDescription()) ? 1.0 : -1.0;
+                                                        accountAmount = accountAmount + movementAmount * movementSign;
+                                                        accountEntity.setAvailableAmount(accountAmount);
+                                                        return accountRepository.save(accountEntity)
+                                                                        .thenReturn(accountMovementEntity)
+                                                                        .map(AccountMovementMapper::toDto);
+                                                }));
         }
 
 }

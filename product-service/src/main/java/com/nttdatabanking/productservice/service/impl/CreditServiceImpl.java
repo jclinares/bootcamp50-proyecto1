@@ -1,6 +1,5 @@
 package com.nttdatabanking.productservice.service.impl;
 
-import com.nttdatabanking.productservice.infraestructure.entity.CreditMovementEntity;
 import com.nttdatabanking.productservice.infraestructure.repository.CreditMovementRepository;
 import com.nttdatabanking.productservice.infraestructure.repository.CreditRepository;
 import com.nttdatabanking.productservice.model.CreditCreateDto;
@@ -12,7 +11,8 @@ import com.nttdatabanking.productservice.util.Messages;
 import com.nttdatabanking.productservice.util.enumeration.CreditMovementTypeEnum;
 import com.nttdatabanking.productservice.util.mapper.CreditMapper;
 import com.nttdatabanking.productservice.util.mapper.CreditMovementMapper;
-import com.nttdatabanking.productservice.util.validation.CreditValidation;
+import com.nttdatabanking.productservice.util.validation.CreditMovementValidator;
+import com.nttdatabanking.productservice.util.validation.CreditValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -25,7 +25,10 @@ import reactor.core.publisher.Mono;
 public class CreditServiceImpl implements CreditService {
 
         @Autowired
-        private CreditValidation creditValidation;
+        private CreditValidator creditValidator;
+
+        @Autowired
+        private CreditMovementValidator creditMovementValidator;
 
         @Autowired
         private CreditRepository creditRepository;
@@ -45,9 +48,9 @@ public class CreditServiceImpl implements CreditService {
         public Mono<CreditDetailDto> create(
                         Mono<CreditCreateDto> creditCreateDto) {
                 return creditCreateDto
-                                .filter(dto -> creditValidation.validateCredit(dto))
+                                .filter(dto -> creditValidator.validateCredit(dto))
                                 .switchIfEmpty(Mono.error(new Error(Messages.CREDITVALIDATIONERROR)))
-                                .flatMap(dto -> creditValidation.validateDbCredit(dto))
+                                .flatMap(dto -> creditValidator.validateDbCredit(dto))
                                 .switchIfEmpty(Mono.error(new Error(Messages.CREDITDBVALIDATIONERROR)))
                                 .map(CreditMapper::toEntity)
                                 .flatMap(creditRepository::insert)
@@ -66,28 +69,24 @@ public class CreditServiceImpl implements CreditService {
         public Mono<CreditMovementDetailDto> createMovement(
                         Mono<CreditMovementCreateDto> creditMovementCreateDto) {
                 return creditMovementCreateDto
-                                .filter(dto -> creditValidation.validateCreditMovement(dto))
-                                .switchIfEmpty(Mono.error(new Error(Messages.ERRORCREDITMOVEMENTVALIDATION)))
+                                .filter(dto -> creditMovementValidator.validateCreditMovement(dto))
+                                .switchIfEmpty(Mono.error(new Error(Messages.CREDITMOVEMENTVALIDATIONERROR)))
                                 .map(CreditMovementMapper::toEntity)
                                 .flatMap(creditMovementRepository::insert)
-                                .flatMap(e -> updateCredit(e))
-                                .map(CreditMovementMapper::toDto);
-        }
-
-        private Mono<CreditMovementEntity> updateCredit(
-                        CreditMovementEntity creditMovementEntity) {
-                return creditRepository
-                                .findById(creditMovementEntity.getCreditId())
-                                .flatMap(creditEntity -> {
-                                        creditEntity.setAvailableAmount(creditEntity.getAvailableAmount()
-                                                        + creditMovementEntity.getAmount() * (creditMovementEntity
-                                                                        .getMovementType().equalsIgnoreCase(
-                                                                                        CreditMovementTypeEnum.PAYMENT
-                                                                                                        .getDescription())
-                                                                                                                        ? 1
-                                                                                                                        : -1));
-                                        return creditRepository.save(creditEntity).thenReturn(creditMovementEntity);
-                                });
+                                .flatMap(creditMovementEntity -> creditRepository
+                                                .findById(creditMovementEntity.getCreditId())
+                                                .flatMap(creditEntity -> {
+                                                        Double accountAmount = creditEntity.getAvailableAmount();
+                                                        Double movementAmount = creditMovementEntity.getAmount();
+                                                        Double movementSign = creditMovementEntity.getMovementType()
+                                                                        .equals(CreditMovementTypeEnum.PAYMENT
+                                                                                        .getDescription()) ? 1.0 : -1.0;
+                                                        accountAmount = accountAmount + movementAmount * movementSign;
+                                                        creditEntity.setAvailableAmount(accountAmount);
+                                                        return creditRepository.save(creditEntity)
+                                                                        .thenReturn(creditMovementEntity)
+                                                                        .map(CreditMovementMapper::toDto);
+                                                }));
         }
 
 }

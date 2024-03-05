@@ -5,12 +5,12 @@ import com.nttdatabanking.productservice.model.CreditMovementCreateDto;
 import com.nttdatabanking.productservice.model.CreditMovementDetailDto;
 
 /**
- * Clase mapper movimiento credito.
+ * Clase mapeador movimiento credito.
  */
 public class CreditMovementMapper {
 
     /**
-     * Metodo map CreditMovementEntity a CreditMovementDetailDto.
+     * Metodo mapeador CreditMovementEntity a CreditMovementDetailDto.
      */
     public static CreditMovementDetailDto toDto(CreditMovementEntity creditMovementEntity) {
         CreditMovementDetailDto creditMovementDetailDto = new CreditMovementDetailDto();
@@ -22,13 +22,13 @@ public class CreditMovementMapper {
     }
 
     /**
-     * Metodo map CreditMovementCreateDto a CreditMovementEntity.
+     * Metodo mapeador CreditMovementCreateDto a CreditMovementEntity.
      */
     public static CreditMovementEntity toEntity(CreditMovementCreateDto creditMovementCreateDto) {
         CreditMovementEntity creditMovementEntity = new CreditMovementEntity();
         creditMovementEntity.setCreditId(creditMovementCreateDto.getCreditId());
         creditMovementEntity.setDescription(creditMovementCreateDto.getDescription());
-        creditMovementEntity.setMovementType(creditMovementCreateDto.getMovementType());
+        creditMovementEntity.setMovementType(creditMovementCreateDto.getMovementType().toUpperCase());
         creditMovementEntity.setAmount(creditMovementCreateDto.getAmount());
         return creditMovementEntity;
     }

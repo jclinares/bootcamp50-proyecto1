@@ -2,9 +2,7 @@ package com.nttdatabanking.productservice.util.validation;
 
 import com.nttdatabanking.productservice.infraestructure.repository.CreditRepository;
 import com.nttdatabanking.productservice.model.CreditCreateDto;
-import com.nttdatabanking.productservice.model.CreditMovementCreateDto;
 import com.nttdatabanking.productservice.util.enumeration.CostumerTypeEnum;
-import com.nttdatabanking.productservice.util.enumeration.CreditMovementTypeEnum;
 import com.nttdatabanking.productservice.util.enumeration.CreditTypeEnum;
 import com.nttdatabanking.productservice.util.enumeration.UtilEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -13,16 +11,16 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 /**
- * Clase validacion credito.
+ * Clase validador credito.
  */
 @Service
-public class CreditValidation {
+public class CreditValidator {
 
     @Autowired
     private CreditRepository creditRepository;
 
     /**
-     * Metodo validacion credito.
+     * Metodo validador credito.
      */
     public Boolean validateCredit(CreditCreateDto dto) {
         return validateGeneralCreditt(dto)
@@ -33,7 +31,7 @@ public class CreditValidation {
     }
 
     /**
-     * Metodo validacion db credito.
+     * Metodo validador db credito.
      */
     public Mono<CreditCreateDto> validateDbCredit(CreditCreateDto dto) {
         String customerType = dto.getCustomerType().toUpperCase();
@@ -64,13 +62,6 @@ public class CreditValidation {
             return Mono.just(dto);
         }
         return Mono.empty();
-    }
-
-    /**
-     * Metodo validacion movimiento credito.
-     */
-    public Boolean validateCreditMovement(CreditMovementCreateDto dto) {
-        return UtilEnum.getByDescription(CreditMovementTypeEnum.class, dto.getMovementType()) != null;
     }
 
     private Boolean validateGeneralCreditt(CreditCreateDto dto) {

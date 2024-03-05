@@ -10,13 +10,13 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 /**
- * Clase mapper cuenta.
+ * Clase mapeador cuenta.
  */
 @Component
 public class AccountMapper {
 
     /**
-     * Metodo map AccountEntity a AccountDetailDto.
+     * Metodo mapeador AccountEntity a AccountDetailDto.
      */
     public static AccountDetailDto toDto(
             AccountEntity accountEntity) {
@@ -30,20 +30,20 @@ public class AccountMapper {
     }
 
     /**
-     * Metodo map AccountCreateDto a AccountEntity.
+     * Metodo mapeador AccountCreateDto a AccountEntity.
      */
     public static AccountEntity toEntity(AccountCreateDto accountCreateDto) {
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setCustomerType(accountCreateDto.getCustomerType());
+        accountEntity.setCustomerType(accountCreateDto.getCustomerType().toUpperCase());
         accountEntity.setCustomerList(toEntity(accountCreateDto.getCustomerList()));
         accountEntity.setAccountNumber(accountCreateDto.getAccountNumber());
-        accountEntity.setAccountType(accountCreateDto.getAccountType());
+        accountEntity.setAccountType(accountCreateDto.getAccountType().toUpperCase());
         accountEntity.setAvailableAmount(accountCreateDto.getAvailableAmount());
         return accountEntity;
     }
 
     /**
-     * Metodo map ListAccountCustomerDto a ListAccountCustomerEntity.
+     * Metodo mapeador ListAccountCustomerDto a ListAccountCustomerEntity.
      */
     private static List<CustomerEntity> toEntity(List<CustomerDto> customerDtoList) {
         List<CustomerEntity> accountCustomerList = new ArrayList<>();
@@ -54,12 +54,12 @@ public class AccountMapper {
     }
 
     /**
-     * Metodo map AccountCustomerDto a AccountCustomerEntity.
+     * Metodo mapeador AccountCustomerDto a AccountCustomerEntity.
      */
     private static CustomerEntity toEntity(CustomerDto customerDto) {
         CustomerEntity customerEntity = new CustomerEntity();
         customerEntity.setCustomerId(customerDto.getCustomerId());
-        customerEntity.setBusinessCustomerType(customerDto.getBusinessCustomerType());
+        customerEntity.setBusinessCustomerType(customerDto.getBusinessCustomerType().toUpperCase());
         return customerEntity;
     }
 
